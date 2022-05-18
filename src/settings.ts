@@ -24,7 +24,7 @@ export async function registerAllSettings() {
 
 	await joplin.settings.registerSettings({
 		'indentWithTabs': {
-			value: true,
+			value: false,
 			type: SettingItemType.Bool,
 			section: 'settings.alondmnt.spaceindent',
 			public: true,
