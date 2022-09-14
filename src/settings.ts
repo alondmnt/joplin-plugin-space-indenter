@@ -5,6 +5,7 @@ export interface IndentSettings {
 	indentWithTabs: boolean;
 	indentUnit: number;
 	tabSize: number;
+	replaceChars: boolean;
 }
 
 export async function getAllSettings(): Promise<IndentSettings> {
@@ -12,6 +13,7 @@ export async function getAllSettings(): Promise<IndentSettings> {
 		indentWithTabs: await joplin.settings.value('indentWithTabs'),
 		indentUnit: await joplin.settings.value('indentUnit'),
 		tabSize: await joplin.settings.value('tabSize'),
+		replaceChars: await joplin.settings.value('replaceChars'),
 	}
 	return settings;
 }
@@ -46,6 +48,15 @@ export async function registerAllSettings() {
 			section: 'settings.alondmnt.spaceindent',
 			public: true,
 			label: 'The width of a tab character. Defaults to 4.',
+		},
+
+		'replaceChars': {
+			value: false,
+			type: SettingItemType.Bool,
+			section: 'settings.alondmnt.spaceindent',
+			public: true,
+			label: 'Automatic find & replace of tab --> space (or vice versa)',
+			description: 'Upon loading a note. May require switching notes / notebooks on the first time.'
 		},
 	});
 }
