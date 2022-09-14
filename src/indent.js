@@ -28,6 +28,23 @@ module.exports = {
 				});
 
 				CodeMirror.defineExtension('updateIndentSettings', function(newSettings) {
+					if (!newSettings.indentWithTabs) {
+						// from: https://github.com/codemirror/codemirror5/issues/988#issuecomment-40874237
+						this.setOption('extraKeys', {
+							Tab: (cm) => {
+								if (cm.getMode().name === 'null') {
+									cm.execCommand('insertTab');
+								} else {
+									if (cm.somethingSelected()) {
+									cm.execCommand('indentMore');
+									} else {
+									cm.execCommand('insertSoftTab');
+									}
+								}
+								},
+							'Shift-Tab': (cm) => cm.execCommand('indentLess')
+						});
+					}
 					this.setOption('indentWithTabs', newSettings.indentWithTabs);
 					this.setOption('indentUnit', newSettings.indentUnit);
 					this.setOption('tabSize', newSettings.tabSize);
