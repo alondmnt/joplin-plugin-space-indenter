@@ -56,7 +56,7 @@ export async function registerAllSettings() {
 			section: 'settings.alondmnt.spaceindent',
 			public: true,
 			label: 'Automatic find & replace of tab --> space (or vice versa)',
-			description: 'Upon loading a note. May require switching notes / notebooks on the first time.'
+			description: 'Will reformat each node while loading it. This may require switching notes / notebooks after setting it on. Instead of auto-formatting, you may also manually press the Space Indenter toolbar button.'
 		},
 	});
 }
