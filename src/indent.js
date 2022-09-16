@@ -29,16 +29,19 @@ module.exports = {
 
 				CodeMirror.defineExtension('updateIndentSettings', function(newSettings) {
 					if (!newSettings.indentWithTabs) {
-						// from: https://github.com/codemirror/codemirror5/issues/988#issuecomment-40874237
+						// based on: https://github.com/codemirror/codemirror5/issues/988#issuecomment-549644684
 						this.setOption('extraKeys', {
 							Tab: (cm) => {
 								if (cm.getMode().name === 'null') {
 									cm.execCommand('insertTab');
 								} else {
-									if (cm.somethingSelected()) {
-									cm.execCommand('indentMore');
+									firstChar = cm.getLine(cm.getCursor().line).trim()[0];
+									if (cm.somethingSelected() ||
+										(firstChar == '-') ||
+										(firstChar == '*')) {
+										cm.execCommand('indentMore');
 									} else {
-									cm.execCommand('insertSoftTab');
+										cm.execCommand('insertSoftTab');
 									}
 								}
 								},
