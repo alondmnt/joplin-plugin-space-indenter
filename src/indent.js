@@ -32,13 +32,13 @@ module.exports = {
 						// based on: https://github.com/codemirror/codemirror5/issues/988#issuecomment-549644684
 						this.setOption('extraKeys', {
 							Tab: (cm) => {
+								const isListItem = /^-|^\*|^\d\./g;
 								if (cm.getMode().name === 'null') {
 									cm.execCommand('insertTab');
 								} else {
-									firstChar = cm.getLine(cm.getCursor().line).trim()[0];
+									line = cm.getLine(cm.getCursor().line).trim();
 									if (cm.somethingSelected() ||
-										(firstChar == '-') ||
-										(firstChar == '*')) {
+										isListItem.test(line)) {
 										cm.execCommand('indentMore');
 									} else {
 										cm.execCommand('insertSoftTab');
