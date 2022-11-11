@@ -6,6 +6,7 @@ export interface IndentSettings {
 	indentUnit: number;
 	tabSize: number;
 	replaceChars: boolean;
+	smartIndent: boolean;
 }
 
 export async function getAllSettings(): Promise<IndentSettings> {
@@ -14,6 +15,7 @@ export async function getAllSettings(): Promise<IndentSettings> {
 		indentUnit: await joplin.settings.value('indentUnit'),
 		tabSize: await joplin.settings.value('tabSize'),
 		replaceChars: await joplin.settings.value('replaceChars'),
+		smartIndent: await joplin.settings.value('smartIndent'),
 	}
 	return settings;
 }
@@ -57,6 +59,15 @@ export async function registerAllSettings() {
 			public: true,
 			label: 'Automatic find & replace of tab --> space (or vice versa)',
 			description: 'Will reformat each node while loading it. This may require switching notes / notebooks after setting it on. Instead of auto-formatting, you may also manually press the Space Indenter toolbar button.'
+		},
+
+		'smartIndent': {
+			value: true,
+			type: SettingItemType.Bool,
+			section: 'settings.alondmnt.spaceindent',
+			public: true,
+			label: 'Smart indent. Default is true.',
+			description: 'Use context-sensitive indentation in code blocks (or just indent the same as the line before).',
 		},
 	});
 }

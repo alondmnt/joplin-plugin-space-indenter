@@ -51,6 +51,7 @@ module.exports = {
 					this.setOption('indentWithTabs', newSettings.indentWithTabs);
 					this.setOption('indentUnit', newSettings.indentUnit);
 					this.setOption('tabSize', newSettings.tabSize);
+					this.setOption('smartIndent', newSettings.smartIndent);
 				});
 			},
 
