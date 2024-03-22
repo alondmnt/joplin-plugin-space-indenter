@@ -2,7 +2,19 @@ import joplin from 'api';
 import { ContentScriptType, ToolbarButtonLocation } from 'api/types';
 import { registerAllSettings, getAllSettings, IndentSettings } from './settings'
 
-const contentScriptId = 'space-indenter';
+async function registerContentScript(sourcePath: string, contentScriptId: string) {
+	await joplin.contentScripts.register(
+		ContentScriptType.CodeMirrorPlugin,
+		contentScriptId,
+		sourcePath,
+	);
+
+	await joplin.contentScripts.onMessage(contentScriptId, async (message:any) => {
+		if (message.name === 'getSettings') {
+			return await getAllSettings();
+		}
+	});
+}
 
 async function reformatTabs(settings: IndentSettings) {
 	let pattern: RegExp, replace: string;
@@ -38,17 +50,8 @@ joplin.plugins.register({
 
 		await joplin.views.toolbarButtons.create('butSpaceIndent', 'spaceindent.reformatTabs', ToolbarButtonLocation.EditorToolbar);
 
-		await joplin.contentScripts.register(
-			ContentScriptType.CodeMirrorPlugin,
-			contentScriptId,
-			'./indent.js'
-		);
-
-		await joplin.contentScripts.onMessage(contentScriptId, async (message:any) => {
-			if (message.name === 'getSettings') {
-				return await getAllSettings();
-			}
-		});
+		await registerContentScript('./contentScript/codeMirror5.js', 'space-indenter-cm5');
+		await registerContentScript('./contentScript/codeMirror6.js', 'space-indenter-cm6');
 
 		await joplin.workspace.onNoteSelectionChange(async () => {
 			const settings = await getAllSettings();
