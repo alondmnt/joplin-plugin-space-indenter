@@ -31,7 +31,7 @@ export default function(context: PluginContext) {
 									cm.execCommand('insertSoftTab');
 								}
 							}
-							},
+						},
 						'Shift-Tab': (cm: any) => cm.execCommand('indentLess')
 					});
 				}
