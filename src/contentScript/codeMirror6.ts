@@ -9,7 +9,12 @@ export default function(context: PluginContext) {
 			if (!CodeMirror.cm6) return;
 
 			const settings = await getSettings(context);
-			const indentCharacter = settings.indentWithTabs ? '\t' : ' ';
+
+			// CodeMirror 6 uses a string indent unit
+			let indentation = ' '.repeat(settings.indentUnit);
+			if (settings.indentWithTabs) {
+				indentation = '\t'.repeat(Math.floor(settings.indentUnit / settings.tabSize));
+			}
 
 			// Returning null means to use the indentation of the line above the current:
 			// https://codemirror.net/docs/ref/#language.indentService
@@ -17,7 +22,7 @@ export default function(context: PluginContext) {
 
 			CodeMirror.addExtension([
 				Prec.high([
-					indentUnit.of(indentCharacter.repeat(settings.indentUnit)),
+					indentUnit.of(indentation),
 					EditorState.tabSize.of(settings.tabSize),
 					settings.smartIndent ? [] : continueIndentIndenter,
 				]),
