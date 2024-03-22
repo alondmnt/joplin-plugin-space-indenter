@@ -16,8 +16,8 @@ export default function(context: PluginContext) {
 				indentation = '\t'.repeat(Math.floor(settings.indentUnit / settings.tabSize));
 			}
 
-			// Returning null means to use the indentation of the line above the current:
-			// https://codemirror.net/docs/ref/#language.indentService
+			// Returning null: Makes the editor use the indentation of the line above the current.
+			// See https://codemirror.net/docs/ref/#language.indentService
 			const continueIndentIndenter = indentService.of(() => null);
 
 			CodeMirror.addExtension([
