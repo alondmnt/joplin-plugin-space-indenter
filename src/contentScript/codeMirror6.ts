@@ -26,7 +26,6 @@ export default function(context: PluginContext) {
 			} else {
 				continueIndentIndenter = [];
 			}
-			console.log('continueIndentIndenter', continueIndentIndenter);
 
 			CodeMirror.addExtension([
 				Prec.high([
