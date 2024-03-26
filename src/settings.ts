@@ -6,6 +6,7 @@ export interface IndentSettings {
 	indentUnit: number;
 	tabSize: number;
 	replaceChars: boolean;
+	autoIndent: boolean;
 	smartIndent: boolean;
 }
 
@@ -15,6 +16,7 @@ export async function getAllSettings(): Promise<IndentSettings> {
 		indentUnit: await joplin.settings.value('indentUnit'),
 		tabSize: await joplin.settings.value('tabSize'),
 		replaceChars: await joplin.settings.value('replaceChars'),
+		autoIndent: await joplin.settings.value('autoIndent'),
 		smartIndent: await joplin.settings.value('smartIndent'),
 	}
 	return settings;
@@ -61,13 +63,22 @@ export async function registerAllSettings() {
 			description: 'Will reformat each node while loading it. This may require switching notes / notebooks after setting it on. Instead of auto-formatting, you may also manually press the Space Indenter toolbar button.'
 		},
 
+		'autoIndent': {
+			value: true,
+			type: SettingItemType.Bool,
+			section: 'settings.alondmnt.spaceindent',
+			public: true,
+			label: 'Auto indent. Default is true.',
+			description: 'Automatically indent when starting a new line. (Requires CodeMirror 6 / the beta editor.)',
+		},
+
 		'smartIndent': {
 			value: true,
 			type: SettingItemType.Bool,
 			section: 'settings.alondmnt.spaceindent',
 			public: true,
 			label: 'Smart indent. Default is true.',
-			description: 'Use context-sensitive indentation in code blocks (or just indent the same as the line before).',
+			description: 'Use context-sensitive indentation in code blocks (or just indent the same as the line before). Auto-indent must be enabled.',
 		},
 	});
 }

@@ -18,13 +18,21 @@ export default function(context: PluginContext) {
 
 			// Returning null: Makes the editor use the indentation of the line above the current.
 			// See https://codemirror.net/docs/ref/#language.indentService
-			const continueIndentIndenter = indentService.of(() => null);
+			let continueIndentIndenter = null;
+			if (!settings.autoIndent) {
+				continueIndentIndenter = indentService.of(() => 0);
+			} else if (!settings.smartIndent) {
+				continueIndentIndenter = indentService.of(() => null);
+			} else {
+				continueIndentIndenter = [];
+			}
+			console.log('continueIndentIndenter', continueIndentIndenter);
 
 			CodeMirror.addExtension([
 				Prec.high([
 					indentUnit.of(indentation),
 					EditorState.tabSize.of(settings.tabSize),
-					settings.smartIndent ? [] : continueIndentIndenter,
+					continueIndentIndenter,
 				]),
 			]);
 		},
