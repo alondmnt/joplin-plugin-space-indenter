@@ -29,8 +29,10 @@ async function reformatTabs(settings: IndentSettings) {
 	const currentNote = await joplin.workspace.selectedNote();
 	const newBody = currentNote.body.replace(pattern, replace);
 	if (newBody != currentNote.body) {
-		await joplin.commands.execute('editor.setText', newBody);
 		await joplin.data.put(['notes', currentNote.id], null, { body: newBody });
+		// Wait in case the editor is not ready yet
+		await new Promise(resolve => setTimeout(resolve, 100));
+		await joplin.commands.execute('editor.setText', newBody);
 	}
 }
 
