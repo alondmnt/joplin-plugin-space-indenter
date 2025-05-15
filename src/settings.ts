@@ -11,15 +11,22 @@ export interface IndentSettings {
 }
 
 export async function getAllSettings(): Promise<IndentSettings> {
-	const settings: IndentSettings = {
-		indentWithTabs: await joplin.settings.value('indentWithTabs'),
-		indentUnit: await joplin.settings.value('indentUnit'),
-		tabSize: await joplin.settings.value('tabSize'),
-		replaceChars: await joplin.settings.value('replaceChars'),
-		autoIndent: await joplin.settings.value('autoIndent'),
-		smartIndent: await joplin.settings.value('smartIndent'),
-	}
-	return settings;
+	const settings = await joplin.settings.values([
+		'indentWithTabs',
+		'indentUnit',
+		'tabSize',
+		'replaceChars',
+		'autoIndent',
+		'smartIndent'
+	]);
+	return {
+		indentWithTabs: settings.indentWithTabs as boolean,
+		indentUnit: settings.indentUnit as number,
+		tabSize: settings.tabSize as number,
+		replaceChars: settings.replaceChars as boolean,
+		autoIndent: settings.autoIndent as boolean,
+		smartIndent: settings.smartIndent as boolean
+	};
 }
 
 export async function registerAllSettings() {
